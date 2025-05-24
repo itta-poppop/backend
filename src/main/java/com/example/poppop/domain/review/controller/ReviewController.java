@@ -4,7 +4,7 @@ import com.example.poppop.domain.review.dto.request.ReviewCreateRequest;
 import com.example.poppop.domain.review.dto.request.ReviewUpdateRequest;
 import com.example.poppop.domain.review.dto.response.ReviewResponse;
 import com.example.poppop.domain.review.service.ReviewService;
-import com.example.poppop.global.response.ApiResponse;
+import com.example.poppop.global.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

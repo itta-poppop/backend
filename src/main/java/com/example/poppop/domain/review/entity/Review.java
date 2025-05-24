@@ -1,7 +1,7 @@
 package com.example.poppop.domain.review.entity;
 
 import com.example.poppop.domain.member.entity.Member;
-import com.example.poppop.domain.popup.entity.PopUp;
+import com.example.poppop.domain.popup.entity.Popup;
 import com.example.poppop.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +29,7 @@ public class Review extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "popup_id")
-    private PopUp popUp;
+    private Popup popup;
 
 //    @OneToMany(mappedBy = "review",
 //            cascade = CascadeType.ALL,
@@ -44,11 +44,11 @@ public class Review extends BaseEntity {
     @Builder
     private Review(String content,
                    @NonNull Member member,
-                   @NonNull PopUp popUp) {
+                   @NonNull Popup popup) {
 
         this.content = (content == null || content.isBlank()) ? "" : content;
         this.member  = member;
-        this.popUp   = popUp;
+        this.popup   = popup;
     }
 
     public void updateContent(String content) {

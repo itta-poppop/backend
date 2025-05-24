@@ -2,8 +2,8 @@ package com.example.poppop.domain.review.service;
 
 import com.example.poppop.domain.member.entity.Member;
 import com.example.poppop.domain.member.repository.MemberRepository;
-import com.example.poppop.domain.popup.entity.PopUp;
-import com.example.poppop.domain.popup.repository.PopUpRepository;
+import com.example.poppop.domain.popup.entity.Popup;
+import com.example.poppop.domain.popup.repository.PopupRepository;
 import com.example.poppop.domain.review.dto.request.ReviewCreateRequest;
 import com.example.poppop.domain.review.dto.request.ReviewUpdateRequest;
 import com.example.poppop.domain.review.dto.response.ReviewResponse;
@@ -25,7 +25,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final MemberRepository memberRepository;
-    private final PopUpRepository popUpRepository;
+    private final PopupRepository popUpRepository;
 
     @Override
     @Transactional
@@ -38,13 +38,13 @@ public class ReviewServiceImpl implements ReviewService {
         Member member = memberRepository.findById(dto.memberId())
                 .orElseThrow(() -> new CustomException(ReviewErrorCode.MEMBER_NOT_FOUND));
 
-        PopUp popUp = popUpRepository.findById(popupId)
+        Popup popup = popUpRepository.findById(popupId)
                 .orElseThrow(() -> new CustomException(ReviewErrorCode.POPUP_NOT_FOUND));
 
         Review review = Review.builder()
                 .content(dto.content())
                 .member(member)
-                .popUp(popUp)
+                .popup(popup)
                 .build();
 
         dto.imageUrls().forEach(url ->
