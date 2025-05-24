@@ -1,7 +1,7 @@
 package com.example.poppop.global.error.exception;
 
 import com.example.poppop.global.error.GlobalErrorCode;
-import com.example.poppop.global.response.ApiResponse;
+import com.example.poppop.global.common.ApiResponse;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;

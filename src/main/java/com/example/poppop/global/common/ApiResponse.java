@@ -1,4 +1,4 @@
-package com.example.poppop.global.response;
+package com.example.poppop.global.common;
 
 
 import com.example.poppop.global.error.BaseError;
