@@ -6,6 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class PopupDetailDto {
+    private Long id;
     private String title;
     private String imageUrl;
     private String location;
@@ -14,7 +15,8 @@ public class PopupDetailDto {
     private String detail;
 
     @Builder
-    public PopupDetailDto(String title, String imageUrl, String location, String date, String comment, String detail) {
+    public PopupDetailDto(Long id, String title, String imageUrl, String location, String date, String comment, String detail) {
+        this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.location = location;
@@ -25,6 +27,7 @@ public class PopupDetailDto {
 
     public static PopupDetailDto from(Popup popup) {
         return PopupDetailDto.builder()
+                .id(popup.getId())
                 .title(popup.getTitle())
                 .imageUrl(popup.getImage())
                 .location(popup.getLocation())

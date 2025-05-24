@@ -8,20 +8,20 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TrendPopupDto {
+public class PopupTrendDto {
     private String title;
     private String imageUrl;
     private String location;
 
     @Builder
-    public TrendPopupDto(String title, String imageUrl, String location) {
+    public PopupTrendDto(String title, String imageUrl, String location) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.location = location;
     }
 
-    public static TrendPopupDto from(Popup popup) {
-        return TrendPopupDto.builder()
+    public static PopupTrendDto from(Popup popup) {
+        return PopupTrendDto.builder()
                 .title(popup.getTitle())
                 .imageUrl(popup.getImage())
                 .location(extractLocation(popup.getLocation()))

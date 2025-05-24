@@ -3,7 +3,9 @@ package com.example.poppop.domain.popup.service;
 import com.example.poppop.domain.memeber.entity.CustomOAuth2User;
 import com.example.poppop.domain.popup.dto.PopupDetailDto;
 import com.example.poppop.domain.popup.dto.PopupPlannedDto;
-import com.example.poppop.domain.popup.dto.TrendPopupDto;
+import com.example.poppop.domain.popup.dto.PopupSearchDto;
+import com.example.poppop.domain.popup.dto.PopupTrendDto;
+import com.example.poppop.domain.popup.dto.request.PopupSearchRequestDto;
 import com.example.poppop.domain.popup.entity.Popup;
 import com.example.poppop.domain.popup.repository.PopupRepository;
 import com.example.poppop.global.error.GlobalErrorCode;
@@ -30,7 +32,7 @@ public class PopupService {
     private static final String ZSET_VIEWCOUNT_KEY = "popup:viewcount";
 
     private final PopupRepository popupRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final PopupRedisService popupRedisService;
 
     // 팝업 상세 조회
@@ -48,7 +50,7 @@ public class PopupService {
 
         String visitedPopupIds = popupRedisService.getValue(strMemberId);
         if(visitedPopupIds==null){
-            popupRedisService.setDateExpire("member:"+strMemberId,strPopupId+"_",calculateTimeOut(5));
+            popupRedisService.setDateExpire("member:"+strMemberId,strPopupId+"_",calculateTimeOut(3));
             popupRedisService.addViewCountInRedis(strPopupId);
         }else{
             String[] strArray = visitedPopupIds.split("_");
@@ -82,6 +84,7 @@ public class PopupService {
         }
     }
     // 오픈예정 팝업 조회
+    // :todo: @CacheEvic 시간 남으면 추가 현재 팝업이 수정되거나 삭제되지는 않을거 같음
     @Cacheable(
             cacheNames = "plannedPopups",
             key = "'page:' + #page + ':size:' + #size"
@@ -97,19 +100,31 @@ public class PopupService {
                 .collect(Collectors.toList());
     }
     // 트랜드 팝업 조회
+    // 레디스 저장 -> 1시간 마다 db 동기화 -> 근데 한번 조회수가 저장되고
     @Cacheable(
             cacheNames = "trendPopups",
             key = "'page:' + #page + 'size:' + #size"
     )
-    public List<TrendPopupDto> getTrendPopups(Integer page,Integer size) {
+    public List<PopupTrendDto> getTrendPopups(Integer page, Integer size) {
         PageRequest pageable = PageRequest.of(page - 1, size);
         List<Popup> trendPopups = popupRepository.findTrendPopups(pageable);
         return trendPopups.stream()
-                .map(TrendPopupDto::from)
+                .map(PopupTrendDto::from)
                 .collect(Collectors.toList());
     }
     //ttl 시간 설정
     private Duration calculateTimeOut(int minutes) {
         return Duration.ofMinutes(minutes);
     }
+    // 검색한 팝업 조회
+    public List<PopupSearchDto> getSearchedPopups(Integer page, Integer size, PopupSearchRequestDto requestDto) {
+        String title = requestDto.getTitle();
+        PageRequest pageable = PageRequest.of(page - 1, size);
+        List<Popup> searchedPopups = popupRepository.findSearchedPopups(pageable, title);
+        return searchedPopups.stream()
+                .map(PopupSearchDto::from)
+                .collect(Collectors.toList());
+    }
+    //
+
 }

@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Slf4j
-public class PopupJsonDto {
+public class PopupInitialDto {
     private String title;
     private String date;
     private String comment;
@@ -19,7 +19,7 @@ public class PopupJsonDto {
     private String location;
 
     @Builder
-    public PopupJsonDto(String title, String date, String comment, String detail, String image, String location) {
+    public PopupInitialDto(String title, String date, String comment, String detail, String image, String location) {
         this.title = title;
         this.date = date;
         this.comment = comment;
@@ -39,10 +39,9 @@ public class PopupJsonDto {
                 .comment(comment)
                 .detail(detail)
                 .image(image)
-                .location(location)
+                .location(removeLocationNbsp(location))
                 .build();
     }
-
 
     private String extractStartDate(String date) {
         try {
@@ -68,5 +67,13 @@ public class PopupJsonDto {
             log.error("날짜 분리가 잘못되었습니다(endDate)");
         }
         return null;
+    }
+
+    public static String removeLocationNbsp(String location) {
+        return location == null ? null :
+                location.replace("복사", "")
+                        .replace("&nbsp;", "")
+                        .replaceAll("\\s+", " ")
+                        .trim();
     }
 }

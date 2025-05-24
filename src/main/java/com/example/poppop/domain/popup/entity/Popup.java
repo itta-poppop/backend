@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,9 +26,11 @@ public class Popup {
     private String location;
     @Column(nullable = true)
     private Integer viewCount;
+    private BigDecimal latitude;
+    private BigDecimal longitude;
 
     @Builder
-    public Popup(String title, String startDate, String endDate, String comment, String detail, String image, String location, int viewCount) {
+    public Popup(String title, String startDate, String endDate, String comment, String detail, String image, String location, int viewCount, BigDecimal latitude, BigDecimal longitude) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -35,9 +39,19 @@ public class Popup {
         this.image = image;
         this.location = location;
         this.viewCount = viewCount;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public void increaseViewCount(int count) {
         this.viewCount += count;
+    }
+
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
     }
 }

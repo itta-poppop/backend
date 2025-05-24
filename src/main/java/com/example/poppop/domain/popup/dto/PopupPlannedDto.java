@@ -12,13 +12,15 @@ import java.time.temporal.ChronoUnit;
 @Getter
 @Slf4j
 public class PopupPlannedDto {
+    private long id;
     private String title;
     private String image;
     private String location; // 서울 성수동까지만
     private String dDay;
 
     @Builder
-    public PopupPlannedDto(String title, String image, String location, String dDay) {
+    public PopupPlannedDto(Long id, String title, String image, String location, String dDay) {
+        this.id = id;
         this.title = title;
         this.image = image;
         this.location = location;
@@ -27,6 +29,7 @@ public class PopupPlannedDto {
 
     public static PopupPlannedDto from(Popup popup) {
         return PopupPlannedDto.builder()
+                .id(popup.getId())
                 .title(popup.getTitle())
                 .image(popup.getImage())
                 .location(extractLocation(popup.getLocation()))
@@ -40,7 +43,6 @@ public class PopupPlannedDto {
         long dDay = ChronoUnit.DAYS.between(today, startDatePars);
         return String.valueOf(dDay);
     }
-
 
     private static String extractLocation(String location) {
         // ::todo:: 파싱해서 넣어주기 indexof substring 아니면 split으로

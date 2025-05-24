@@ -18,6 +18,8 @@ public interface PopupRepository extends JpaRepository<Popup, Long> {
     @Query("select p FROM Popup p order by p.viewCount desc")
     List<Popup> findTrendPopups(Pageable pageable);
 
+    @Query("select p from Popup p where p.title like %:title%")
+    List<Popup> findSearchedPopups(Pageable pageable,String title);
     /*@Modifying
     @Transactional
     @Query("UPDATE Post p SET p.viewCnt = p.viewCnt + 1 WHERE p.postId = :postId")
